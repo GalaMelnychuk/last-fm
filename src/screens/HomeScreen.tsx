@@ -41,6 +41,7 @@ export const HomeScreen = () => {
       dispatch(setAlbums(data?.data?.topalbums?.album));
       dispatch(setTotal(data?.data?.topalbums['@attr']?.totalPages));
     } else {
+      dispatch(setAlbums([]));
       setErrorText('Something went wrong');
     }
     setLoading(false);
@@ -73,6 +74,11 @@ export const HomeScreen = () => {
     navigation.navigate(ScreenEnum.AlbumScreen, {name: 'Test'});
   };
 
+  const handleErrorClose = () => {
+    navigation.goBack();
+    setErrorText('');
+  };
+
   const renderContent = () => {
     if (topAlbums?.items?.length) {
       return (
@@ -90,9 +96,9 @@ export const HomeScreen = () => {
           }
         />
       );
-    } else {
+    } else if (!errorText) {
       return <ListPlaseholder />;
-    }
+    } else null;
   };
 
   return (
@@ -100,7 +106,7 @@ export const HomeScreen = () => {
       <Loader isLoading={loading} />
       <ErrorToast
         visible={!!errorText}
-        handleClose={() => setErrorText('')}
+        handleClose={handleErrorClose}
         errorText={errorText}
       />
       {renderContent()}
