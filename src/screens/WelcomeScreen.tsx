@@ -12,7 +12,7 @@ import {
 import {MainStackParamList, ScreenEnum} from '../navigation/types';
 import {colors, defaultMainPadding, screenHeight} from '../styles/constans';
 import {useDispatch} from 'react-redux';
-import {setUserName} from '../features/userNameSlice';
+import {resetName, setUserName} from '../features/userNameSlice';
 
 export const SignInFormScreen = () => {
   const navigation =
@@ -34,6 +34,7 @@ export const SignInFormScreen = () => {
 
   const logInGuest = () => {
     setName('');
+    dispatch(resetName());
     navToHome();
   };
 
