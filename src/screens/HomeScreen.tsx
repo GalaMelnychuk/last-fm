@@ -12,10 +12,11 @@ import {getTopAlbums} from '../services/requests';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../redux/rootReducer';
 import {setAlbums, setTotal} from '../features/topAlbumsSlice';
-import {defaultMainPadding} from '../styles/constans';
+import {colors, defaultMainPadding} from '../styles/constans';
 import {AlbumItem} from '../components/Albumtem';
 import {Loader} from '../components/Loader';
 import {ErrorToast} from '../components/ErrorToast';
+import {ListPlaseholder} from '../components/ListPlaseholder';
 
 export const HomeScreen = () => {
   const navigation =
@@ -27,7 +28,6 @@ export const HomeScreen = () => {
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState<boolean>(true);
 
   useEffect(() => {
     fetchData();
@@ -38,8 +38,8 @@ export const HomeScreen = () => {
     const data = await getTopAlbums(page);
 
     if (data?.status === 200) {
-      dispatch(setAlbums(data?.data.albums?.album));
-      dispatch(setTotal(data?.data.albums['@attr']?.totalPages));
+      dispatch(setAlbums(data?.data?.topalbums?.album));
+      dispatch(setTotal(data?.data?.topalbums['@attr']?.totalPages));
     } else {
       setErrorText('Something went wrong');
     }
@@ -55,7 +55,7 @@ export const HomeScreen = () => {
     const data = await getTopAlbums(pageNum);
 
     if (data?.status === 200) {
-      dispatch(setAlbums([...topAlbums.items, ...data.data.albums.album]));
+      dispatch(setAlbums([...topAlbums.items, ...data.data.topalbums.album]));
     } else {
       setErrorText('Something went wrong');
     }
@@ -73,6 +73,28 @@ export const HomeScreen = () => {
     navigation.navigate(ScreenEnum.AlbumScreen, {name: 'Test'});
   };
 
+  const renderContent = () => {
+    if (topAlbums?.items?.length) {
+      return (
+        <FlatList
+          data={topAlbums.items}
+          renderItem={({item}) => (
+            <AlbumItem item={item} onPress={navToAlbum} />
+          )}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item, index) => index.toString()}
+          onEndReached={onEndReached}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            loadingMore ? <ActivityIndicator size="small" /> : null
+          }
+        />
+      );
+    } else {
+      return <ListPlaseholder />;
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Loader isLoading={loading} />
@@ -81,17 +103,7 @@ export const HomeScreen = () => {
         handleClose={() => setErrorText('')}
         errorText={errorText}
       />
-      <FlatList
-        data={topAlbums.items}
-        renderItem={({item}) => <AlbumItem item={item} onPress={navToAlbum} />}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item, index) => index.toString()}
-        onEndReached={onEndReached}
-        onEndReachedThreshold={0.5}
-        ListFooterComponent={
-          loadingMore ? <ActivityIndicator size="small" /> : null
-        }
-      />
+      {renderContent()}
     </SafeAreaView>
   );
 };
@@ -99,6 +111,6 @@ export const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: defaultMainPadding,
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
   },
 });

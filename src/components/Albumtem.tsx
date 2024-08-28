@@ -9,16 +9,21 @@ interface Props {
 }
 
 export const AlbumItem: React.FC<Props> = ({item, onPress}) => {
+  const uri =
+    item.image[3]['#text'] || item.image.find(el => el['#text'])?.['#text'];
+
   return (
     <View>
       <TouchableOpacity activeOpacity={1} style={styles.btn} onPress={onPress}>
         <View style={styles.wrapper}>
           <View style={styles.imageCont}>
-            <Image
-              source={{uri: item.image[3]['#text']}}
-              resizeMode="cover"
-              style={styles.image}
-            />
+            {uri && (
+              <Image
+                source={{uri: item.image[3]['#text']}}
+                resizeMode="cover"
+                style={styles.image}
+              />
+            )}
           </View>
           <View style={styles.textCont}>
             <Text style={styles.boldText}>{item.name}</Text>

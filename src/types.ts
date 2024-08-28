@@ -20,18 +20,23 @@ export interface IAlbum {
 interface Attr {
   page: string;
   perPage: string;
-  tag: string;
   total: number;
   totalPages: number;
+  user: string;
 }
 
 export interface ResponseTopAlbums {
   config: any;
   data: {
-    albums: {
+    topalbums: {
       album: IAlbum[];
       '@attr': Attr;
     };
+
+    //albums: {
+    //  album: IAlbum[];
+    //  '@attr': Attr;
+    //};
   };
   headers: any;
   request: XMLHttpRequest;
