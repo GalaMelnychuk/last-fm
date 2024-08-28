@@ -1,12 +1,12 @@
 export enum ScreenEnum {
-  SignInFormScreen = 'SignInFormScreen',
+  WelcomeScreen = 'WelcomeScreen',
   HomeScreen = 'HomeScreen',
   AlbumScreen = 'AlbumScreen',
   AlbumDetailsScreen = 'AlbumDetailsScreen',
 }
 
 export type MainStackParamList = {
-  [ScreenEnum.SignInFormScreen]: undefined;
+  [ScreenEnum.WelcomeScreen]: undefined;
   [ScreenEnum.HomeScreen]: undefined;
   [ScreenEnum.AlbumScreen]: {
     name: string;
