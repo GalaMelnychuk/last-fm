@@ -7,7 +7,6 @@ import {Text, SafeAreaView, StyleSheet, ScrollView, View} from 'react-native';
 import {MainStackParamList, ScreenEnum} from '../navigation/types';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import RenderHtml from 'react-native-render-html';
 import {RootState} from '../redux/rootReducer';
 import {fetchMyArtistInfo} from '../services/requests';
 import {
@@ -69,22 +68,16 @@ export const AlbumDetailsScreen: React.FC<Props> = ({route}) => {
     const startIndex = text?.indexOf('<a');
     const endIndex = text?.indexOf('</a>');
 
-    const isText =
+    const isLinkInText =
       text && startIndex && endIndex && startIndex !== -1 && endIndex !== -1;
 
-    if (isText) {
+    if (isLinkInText) {
       const linkSubstring = text?.substring(startIndex, endIndex + 4);
-      return (
-        <>
-          <Text style={styles.desc}>{text.slice(0, startIndex)}</Text>
-          <RenderHtml
-            contentWidth={screenWidth - defaultMainPadding * 2}
-            source={{html: linkSubstring}}
-          />
-        </>
-      );
-    } else {
+      return <Text style={styles.desc}>{text.slice(0, startIndex)}</Text>;
+    } else if (!!text) {
       return <Text style={styles.desc}>{text}</Text>;
+    } else {
+      return null;
     }
   };
 
@@ -100,24 +93,18 @@ export const AlbumDetailsScreen: React.FC<Props> = ({route}) => {
         contentInsetAdjustmentBehavior="automatic"
         showsVerticalScrollIndicator={false}
         style={styles.scrollCont}>
-        <AlbumLabel
-          style={{
-            width: screenWidth - defaultMainPadding * 2,
-            height: screenWidth - defaultMainPadding * 2,
-            borderRadius: 8,
-          }}
-          item={{image: albumInfo?.image}}
-        />
+        <AlbumLabel style={styles.label} item={{image: albumInfo?.image}} />
         <Text style={styles.greyText}>Name:</Text>
         <Text style={styles.boldText}>{albumInfo.name}</Text>
         <Text style={styles.greyText}>Artist:</Text>
         <Text style={styles.boldText}>{albumInfo.artist}</Text>
+        <View>{formatText(artistDetails?.bio?.content)}</View>
         <View style={styles.textContainer}>
           {formatText(albumInfo?.wiki?.content)}
         </View>
-        <View style={styles.textContainer}>
-          {formatText(artistDetails?.bio?.content)}
-        </View>
+        {!albumInfo?.wiki?.content && !artistDetails?.bio?.content ? (
+          <Text style={styles.desc}>No info provided 🤷‍♂️</Text>
+        ) : null}
       </ScrollView>
     </SafeAreaView>
   );
@@ -159,5 +146,10 @@ const styles = StyleSheet.create({
   scrollCont: {
     paddingTop: 20,
     height: '100%',
+  },
+  label: {
+    width: screenWidth - defaultMainPadding * 2,
+    height: screenWidth - defaultMainPadding * 2,
+    borderRadius: 8,
   },
 });

@@ -1,4 +1,6 @@
 import axios from 'axios';
+import {API_KEY, BASE_URL} from '@env';
+
 import {
   ResponseAlbumInfo,
   ResponseArtistInfo,
@@ -6,15 +8,12 @@ import {
 } from '../types';
 import {store} from '../redux/store';
 
-const API_KEY = '3bdc3a7eee15f9ad433e72d91198877e';
-const BASE_URL = 'https://ws.audioscrobbler.com/2.0';
-
 export const getTopAlbums = async (page: number) => {
   const user = store.getState().userName || 'rj';
 
   try {
     const data: ResponseTopAlbums = await axios({
-      url: `${BASE_URL}/?method=user.gettopalbums&user=${user}&api_key=${API_KEY}&format=json`,
+      url: `${BASE_URL}?method=user.gettopalbums&user=${user}&api_key=${API_KEY}&format=json`,
       method: 'get',
       params: {
         page,
@@ -30,7 +29,7 @@ export const getTopAlbums = async (page: number) => {
 export const getAlbum = async (artist: string, album: string) => {
   try {
     const data: ResponseAlbumInfo = await axios({
-      url: `${BASE_URL}/?method=album.getinfo&api_key=${API_KEY}&artist=${artist}&album=${album}&format=json`,
+      url: `${BASE_URL}?method=album.getinfo&api_key=${API_KEY}&artist=${artist}&album=${album}&format=json`,
       method: 'get',
     });
     return data;
@@ -42,7 +41,7 @@ export const getAlbum = async (artist: string, album: string) => {
 export const fetchMyArtistInfo = async (artist: string) => {
   try {
     const data: ResponseArtistInfo = await axios({
-      url: `${BASE_URL}/?method=artist.getinfo&artist=${artist}&api_key=${API_KEY}&format=json`,
+      url: `${BASE_URL}?method=album.getinfo&api_key=${API_KEY}&artist=${artist}&album=${artist}&format=json`,
       method: 'get',
     });
     return data;
