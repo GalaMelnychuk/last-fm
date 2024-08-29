@@ -32,8 +32,8 @@ export const AlbumDetailsScreen: React.FC<Props> = ({route}) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<MainStackParamList>>();
   const dispatch = useDispatch();
-  const state = useSelector((state: RootState) => state);
-  const {artistDetails, albumInfo} = state;
+  const albumInfo = useSelector((state: RootState) => state.albumInfo);
+  const artistDetails = useSelector((state: RootState) => state.artistDetails);
 
   const [errorText, setErrorText] = useState<string>('');
   const [loading, setLoading] = useState(false);
@@ -50,7 +50,6 @@ export const AlbumDetailsScreen: React.FC<Props> = ({route}) => {
   const fetchMyArtist = async () => {
     setLoading(true);
     const data = await fetchMyArtistInfo(artist);
-    console.log('data', data);
 
     if (data?.status === 200) {
       dispatch(setArtistDetails(data.data.artist));
