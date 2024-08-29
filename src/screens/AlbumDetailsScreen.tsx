@@ -17,6 +17,8 @@ import {Loader} from '../components/Loader';
 import {ErrorToast} from '../components/ErrorToast';
 import {AlbumLabel} from '../components/AlbumLabel';
 import {colors, defaultMainPadding, screenWidth} from '../styles/constans';
+import {GreyItalicText} from '../components/ui/GreyItalicText';
+import {BlackBoldText} from '../components/ui/BlackBoldText';
 
 export interface AlbumDetailsScreenProps {
   artist: string;
@@ -72,7 +74,6 @@ export const AlbumDetailsScreen: React.FC<Props> = ({route}) => {
       text && startIndex && endIndex && startIndex !== -1 && endIndex !== -1;
 
     if (isLinkInText) {
-      const linkSubstring = text?.substring(startIndex, endIndex + 4);
       return <Text style={styles.desc}>{text.slice(0, startIndex)}</Text>;
     } else if (!!text) {
       return <Text style={styles.desc}>{text}</Text>;
@@ -94,10 +95,10 @@ export const AlbumDetailsScreen: React.FC<Props> = ({route}) => {
         showsVerticalScrollIndicator={false}
         style={styles.scrollCont}>
         <AlbumLabel style={styles.label} item={{image: albumInfo?.image}} />
-        <Text style={styles.greyText}>Name:</Text>
-        <Text style={styles.boldText}>{albumInfo.name}</Text>
-        <Text style={styles.greyText}>Artist:</Text>
-        <Text style={styles.boldText}>{albumInfo.artist}</Text>
+        <GreyItalicText text="Name:" />
+        <BlackBoldText text={albumInfo.name} style={styles.boldText} />
+        <GreyItalicText text="Artist:" />
+        <BlackBoldText text={albumInfo.artist} style={styles.boldText} />
         <View>{formatText(artistDetails?.bio?.content)}</View>
         <View style={styles.textContainer}>
           {formatText(albumInfo?.wiki?.content)}
@@ -117,9 +118,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   boldText: {
-    fontWeight: '800',
-    color: colors.black,
-    fontSize: 16,
     marginBottom: 5,
   },
   btn: {
@@ -129,12 +127,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.lightGrey,
     borderRadius: 8,
-  },
-  greyText: {
-    fontWeight: '800',
-    color: colors.grey,
-    textTransform: 'uppercase',
-    fontStyle: 'italic',
   },
   textContainer: {
     marginBottom: 60,

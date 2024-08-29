@@ -3,6 +3,7 @@ import {FlatList, StyleSheet, Text} from 'react-native';
 import {colors} from '../styles/constans';
 import {IAlbumInfo, ITrakAlbum} from '../types';
 import {AlbumLabel} from './AlbumLabel';
+import {GreyItalicText} from './ui/GreyItalicText';
 
 interface Props {
   data: Array<ITrakAlbum> | [] | undefined;
@@ -28,9 +29,9 @@ export const TrackList: React.FC<Props> = ({data, album}) => {
         <>
           <AlbumLabel item={{image: album?.image, name: album?.name}} />
           {data && !!data.length ? (
-            <Text style={[styles.greyText, styles.blackText]}>Tracks:</Text>
+            <GreyItalicText text="Tracks:" style={styles.greyText} />
           ) : (
-            <Text style={styles.greyText}>No tracks provided 👀</Text>
+            <GreyItalicText text="No tracks provided 👀" />
           )}
         </>
       }
@@ -42,18 +43,11 @@ export const TrackList: React.FC<Props> = ({data, album}) => {
 const styles = StyleSheet.create({
   greyText: {
     marginBottom: 10,
-    fontWeight: '800',
-    color: colors.grey,
-    textTransform: 'uppercase',
-    fontStyle: 'italic',
   },
   trackNameText: {
     marginBottom: 10,
   },
   list: {
     paddingVertical: 20,
-  },
-  blackText: {
-    color: colors.grey,
   },
 });

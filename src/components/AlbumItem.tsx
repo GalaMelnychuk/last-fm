@@ -2,6 +2,8 @@ import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {IAlbum} from '../types';
 import {colors} from '../styles/constans';
+import {GreyItalicText} from './ui/GreyItalicText';
+import {BlackBoldText} from './ui/BlackBoldText';
 
 interface Props {
   item: IAlbum;
@@ -22,8 +24,8 @@ export const AlbumItem: React.FC<Props> = ({item, onPress}) => {
             )}
           </View>
           <View style={styles.textCont}>
-            <Text style={styles.boldText}>{item.name}</Text>
-            <Text style={styles.greyText}>{item.artist.name}</Text>
+            <BlackBoldText text={item.name} />
+            <GreyItalicText text={item.artist.name} style={styles.greyText} />
           </View>
         </View>
       </TouchableOpacity>
@@ -52,18 +54,10 @@ const styles = StyleSheet.create({
   textCont: {
     marginLeft: 10,
   },
-  boldText: {
-    fontSize: 16,
-    lineHeight: 22,
-    fontWeight: 'bold',
-    color: colors.black,
-  },
   greyText: {
     fontSize: 14,
-    fontWeight: 'bold',
-    lineHeight: 18,
-    color: colors.grey,
     marginRight: 10,
+    textTransform: 'none',
   },
   image: {
     width: 51,
