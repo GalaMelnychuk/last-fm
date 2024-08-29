@@ -1,15 +1,16 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View, ImageProps} from 'react-native';
 import {IImage} from '../types';
 
 interface Props {
   item: {
     image: IImage[];
-    name: string;
+    name?: string;
   };
+  style?: ImageProps;
 }
 
-export const AlbumLabel: React.FC<Props> = ({item}) => {
+export const AlbumLabel: React.FC<Props> = ({item, style}) => {
   if (!item || !item?.image || !item?.image?.length) {
     return null;
   }
@@ -19,8 +20,14 @@ export const AlbumLabel: React.FC<Props> = ({item}) => {
 
   return (
     <View>
-      {uri && <Image source={{uri}} resizeMode="cover" style={styles.image} />}
-      <Text style={styles.text}>{item.name}</Text>
+      {uri && (
+        <Image
+          source={{uri}}
+          resizeMode="cover"
+          style={[styles.image, style]}
+        />
+      )}
+      {!!item.name && <Text style={styles.text}>{item.name}</Text>}
     </View>
   );
 };

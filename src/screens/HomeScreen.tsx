@@ -18,7 +18,7 @@ import {Loader} from '../components/Loader';
 import {ErrorToast} from '../components/ErrorToast';
 import {ListPlaseholder} from '../components/ListPlaseholder';
 
-export const HomeScreen = () => {
+export const HomeScreen: React.FC = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<MainStackParamList>>();
   const dispatch = useDispatch();
@@ -71,7 +71,7 @@ export const HomeScreen = () => {
   };
 
   const navToAlbum = async (artist: string, album: string) => {
-    navigation.navigate(ScreenEnum.AlbumScreen, {artist, album});
+    navigation.navigate(ScreenEnum.AlbumTracksScreen, {artist, album});
   };
 
   const handleErrorClose = () => {

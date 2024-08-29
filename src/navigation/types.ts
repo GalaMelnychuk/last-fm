@@ -1,15 +1,16 @@
-import {AlbumScreenProps} from '../screens/AlbumScreen';
+import {AlbumDetailsScreenProps} from '../screens/AlbumDetailsScreen';
+import {AlbumTracksScreenProps} from '../screens/AlbumTracksScreen';
 
 export enum ScreenEnum {
   WelcomeScreen = 'WelcomeScreen',
   HomeScreen = 'HomeScreen',
-  AlbumScreen = 'AlbumScreen',
+  AlbumTracksScreen = 'AlbumTracksScreen',
   AlbumDetailsScreen = 'AlbumDetailsScreen',
 }
 
 export type MainStackParamList = {
   [ScreenEnum.WelcomeScreen]: undefined;
   [ScreenEnum.HomeScreen]: undefined;
-  [ScreenEnum.AlbumScreen]: AlbumScreenProps;
-  [ScreenEnum.AlbumDetailsScreen]: undefined;
+  [ScreenEnum.AlbumTracksScreen]: AlbumTracksScreenProps;
+  [ScreenEnum.AlbumDetailsScreen]: AlbumDetailsScreenProps;
 };

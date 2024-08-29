@@ -12,7 +12,7 @@ export interface IImage {
 export interface IAlbum {
   artist: IArtist;
   image: IImage[];
-  mbid: string;
+  mbid?: string;
   name: string;
   url: string;
 }
@@ -23,14 +23,6 @@ interface Attr {
   total: number;
   totalPages: number;
   user: string;
-}
-
-interface Response {
-  config: any;
-  headers: any;
-  request: XMLHttpRequest;
-  status: number;
-  statusText: string;
 }
 
 export interface IWikiAlbum {
@@ -63,6 +55,28 @@ export interface IAlbumInfo {
   wiki: IWikiAlbum;
 }
 
+export interface IArtistInfo {
+  bio: {
+    content: string;
+    published: string;
+    summary: string;
+  };
+  image: IImage[] | [];
+  mbid: string;
+  name: string;
+  similar?: {artist: IArtist[]};
+  tags?: {tag: {name: string; url: string}[]};
+  url: string;
+}
+
+interface Response {
+  config: any;
+  headers: any;
+  request: XMLHttpRequest;
+  status: number;
+  statusText: string;
+}
+
 export interface ResponseTopAlbums extends Response {
   data: {
     topalbums: {
@@ -75,5 +89,11 @@ export interface ResponseTopAlbums extends Response {
 export interface ResponseAlbumInfo extends Response {
   data: {
     album: IAlbumInfo;
+  };
+}
+
+export interface ResponseArtistInfo extends Response {
+  data: {
+    artist: IArtistInfo;
   };
 }

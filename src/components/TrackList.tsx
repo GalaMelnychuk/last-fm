@@ -1,8 +1,8 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {AlbumLabel} from './AlbumLabel';
+import {FlatList, StyleSheet, Text} from 'react-native';
 import {colors} from '../styles/constans';
 import {IAlbumInfo, ITrakAlbum} from '../types';
+import {AlbumLabel} from './AlbumLabel';
 
 interface Props {
   data: Array<ITrakAlbum> | [] | undefined;
@@ -22,24 +22,19 @@ export const TrackList: React.FC<Props> = ({data, album}) => {
     <FlatList
       data={data}
       keyExtractor={(item, index) => index.toString()}
-      contentContainerStyle={{paddingVertical: 20}}
+      contentContainerStyle={styles.list}
       showsVerticalScrollIndicator={false}
       ListHeaderComponent={
         <>
           <AlbumLabel item={{image: album?.image, name: album?.name}} />
           {data && !!data.length ? (
-            <Text style={styles.greyText}>Tracks:</Text>
+            <Text style={[styles.greyText, styles.blackText]}>Tracks:</Text>
           ) : (
             <Text style={styles.greyText}>No tracks provided 👀</Text>
           )}
         </>
       }
       renderItem={({item}) => renderList(item)}
-      ListFooterComponent={
-        <TouchableOpacity style={styles.btn}>
-          <Text style={styles.text}>Read more about the author</Text>
-        </TouchableOpacity>
-      }
     />
   );
 };
@@ -55,18 +50,10 @@ const styles = StyleSheet.create({
   trackNameText: {
     marginBottom: 10,
   },
-  text: {
-    fontWeight: '800',
-    color: colors.darkGrey,
-    fontSize: 18,
-    marginBottom: 5,
+  list: {
+    paddingVertical: 20,
   },
-  btn: {
-    marginTop: 12,
-    marginBottom: 26,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: colors.lightGrey,
-    borderRadius: 8,
+  blackText: {
+    color: colors.grey,
   },
 });

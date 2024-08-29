@@ -4,7 +4,7 @@ import {
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {MainStackParamList, ScreenEnum} from '../navigation/types';
 import {RootState} from '../redux/rootReducer';
@@ -15,14 +15,17 @@ import {ErrorToast} from '../components/ErrorToast';
 import {colors, defaultMainPadding} from '../styles/constans';
 import {TrackList} from '../components/TrackList';
 
-export interface AlbumScreenProps {
+export interface AlbumTracksScreenProps {
   artist: string;
   album: string;
 }
 
-type Props = NativeStackScreenProps<MainStackParamList, ScreenEnum.AlbumScreen>;
+type Props = NativeStackScreenProps<
+  MainStackParamList,
+  ScreenEnum.AlbumTracksScreen
+>;
 
-export const AlbumScreen = ({route}: Props) => {
+export const AlbumTracksScreen: React.FC<Props> = ({route}) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<MainStackParamList>>();
   const dispatch = useDispatch();
@@ -58,6 +61,12 @@ export const AlbumScreen = ({route}: Props) => {
     setErrorText('');
   };
 
+  const navToArtist = () => {
+    navigation.navigate(ScreenEnum.AlbumDetailsScreen, {
+      artist: albumInfo.artist,
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Loader isLoading={loading} />
@@ -67,6 +76,9 @@ export const AlbumScreen = ({route}: Props) => {
         errorText={errorText}
       />
       <TrackList data={albumInfo.tracks?.track} album={albumInfo} />
+      <TouchableOpacity style={styles.btn} onPress={navToArtist}>
+        <Text style={styles.text}>Read more about the album</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -76,5 +88,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: defaultMainPadding,
     backgroundColor: colors.white,
     flex: 1,
+  },
+  text: {
+    fontWeight: '800',
+    color: colors.darkGrey,
+    fontSize: 18,
+    marginBottom: 5,
+  },
+  btn: {
+    marginTop: 12,
+    marginBottom: 26,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: colors.lightGrey,
+    borderRadius: 8,
   },
 });

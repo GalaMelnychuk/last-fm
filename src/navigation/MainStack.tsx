@@ -5,7 +5,7 @@ import {MainStackParamList, ScreenEnum} from './types';
 import {HomeScreen} from '../screens/HomeScreen';
 import {SignInFormScreen} from '../screens/WelcomeScreen';
 import {AlbumDetailsScreen} from '../screens/AlbumDetailsScreen';
-import {AlbumScreen, AlbumScreenProps} from '../screens/AlbumScreen';
+import {AlbumTracksScreen} from '../screens/AlbumTracksScreen';
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
@@ -27,8 +27,8 @@ export const MainStack = () => {
           }}
         />
         <Stack.Screen
-          name={ScreenEnum.AlbumScreen}
-          component={AlbumScreen}
+          name={ScreenEnum.AlbumTracksScreen}
+          component={AlbumTracksScreen}
           options={{
             title: 'Album Tracks',
             headerBackTitle: 'Back',
@@ -37,6 +37,10 @@ export const MainStack = () => {
         <Stack.Screen
           name={ScreenEnum.AlbumDetailsScreen}
           component={AlbumDetailsScreen}
+          options={{
+            title: 'Album Details',
+            headerBackTitle: 'Back',
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

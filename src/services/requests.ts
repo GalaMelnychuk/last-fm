@@ -1,5 +1,9 @@
 import axios from 'axios';
-import {ResponseAlbumInfo, ResponseTopAlbums} from '../types';
+import {
+  ResponseAlbumInfo,
+  ResponseArtistInfo,
+  ResponseTopAlbums,
+} from '../types';
 import {store} from '../redux/store';
 
 const API_KEY = '3bdc3a7eee15f9ad433e72d91198877e';
@@ -27,6 +31,18 @@ export const getAlbum = async (artist: string, album: string) => {
   try {
     const data: ResponseAlbumInfo = await axios({
       url: `${BASE_URL}/?method=album.getinfo&api_key=${API_KEY}&artist=${artist}&album=${album}&format=json`,
+      method: 'get',
+    });
+    return data;
+  } catch (error) {
+    console.log('error', error);
+  }
+};
+
+export const fetchMyArtistInfo = async (artist: string) => {
+  try {
+    const data: ResponseArtistInfo = await axios({
+      url: `${BASE_URL}/?method=artist.getinfo&artist=${artist}&api_key=${API_KEY}&format=json`,
       method: 'get',
     });
     return data;
