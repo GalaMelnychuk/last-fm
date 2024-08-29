@@ -5,7 +5,7 @@ import {MainStackParamList, ScreenEnum} from './types';
 import {HomeScreen} from '../screens/HomeScreen';
 import {SignInFormScreen} from '../screens/WelcomeScreen';
 import {AlbumDetailsScreen} from '../screens/AlbumDetailsScreen';
-import {AlbumScreen} from '../screens/AlbumScreen';
+import {AlbumScreen, AlbumScreenProps} from '../screens/AlbumScreen';
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
@@ -30,7 +30,7 @@ export const MainStack = () => {
           name={ScreenEnum.AlbumScreen}
           component={AlbumScreen}
           options={{
-            title: 'Album',
+            title: 'Album Tracks',
             headerBackTitle: 'Back',
           }}
         />

@@ -1,3 +1,5 @@
+import {AlbumScreenProps} from '../screens/AlbumScreen';
+
 export enum ScreenEnum {
   WelcomeScreen = 'WelcomeScreen',
   HomeScreen = 'HomeScreen',
@@ -8,8 +10,6 @@ export enum ScreenEnum {
 export type MainStackParamList = {
   [ScreenEnum.WelcomeScreen]: undefined;
   [ScreenEnum.HomeScreen]: undefined;
-  [ScreenEnum.AlbumScreen]: {
-    name: string;
-  };
+  [ScreenEnum.AlbumScreen]: AlbumScreenProps;
   [ScreenEnum.AlbumDetailsScreen]: undefined;
 };

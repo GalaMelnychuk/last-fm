@@ -10,7 +10,7 @@ interface Props {
 
 export const AlbumItem: React.FC<Props> = ({item, onPress}) => {
   const uri =
-    item.image[3]['#text'] || item.image.find(el => el['#text'])?.['#text'];
+    item?.image[3]['#text'] || item?.image?.find(el => el['#text'])?.['#text'];
 
   return (
     <View>
@@ -18,11 +18,7 @@ export const AlbumItem: React.FC<Props> = ({item, onPress}) => {
         <View style={styles.wrapper}>
           <View style={styles.imageCont}>
             {uri && (
-              <Image
-                source={{uri: item.image[3]['#text']}}
-                resizeMode="cover"
-                style={styles.image}
-              />
+              <Image source={{uri}} resizeMode="cover" style={styles.image} />
             )}
           </View>
           <View style={styles.textCont}>

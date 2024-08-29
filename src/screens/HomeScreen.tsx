@@ -13,7 +13,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../redux/rootReducer';
 import {setAlbums, setTotal} from '../features/topAlbumsSlice';
 import {colors, defaultMainPadding} from '../styles/constans';
-import {AlbumItem} from '../components/Albumtem';
+import {AlbumItem} from '../components/AlbumItem';
 import {Loader} from '../components/Loader';
 import {ErrorToast} from '../components/ErrorToast';
 import {ListPlaseholder} from '../components/ListPlaseholder';
@@ -70,8 +70,8 @@ export const HomeScreen = () => {
     });
   };
 
-  const navToAlbum = () => {
-    navigation.navigate(ScreenEnum.AlbumScreen, {name: 'Test'});
+  const navToAlbum = async (artist: string, album: string) => {
+    navigation.navigate(ScreenEnum.AlbumScreen, {artist, album});
   };
 
   const handleErrorClose = () => {
@@ -85,7 +85,10 @@ export const HomeScreen = () => {
         <FlatList
           data={topAlbums.items}
           renderItem={({item}) => (
-            <AlbumItem item={item} onPress={navToAlbum} />
+            <AlbumItem
+              item={item}
+              onPress={() => navToAlbum(item.artist.name, item.name)}
+            />
           )}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => index.toString()}

@@ -13,6 +13,7 @@ export const colors = {
   blueGrey: '#6d779e',
   blue: '#1bbbd6',
   purpur: '#7b7fff',
+  darkGrey: '#3f4357',
 };
 
 export const defaultMainPadding = 24;
