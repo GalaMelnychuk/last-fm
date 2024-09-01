@@ -1,6 +1,6 @@
 import React from 'react';
 import {FlatList, StyleSheet, Text} from 'react-native';
-import {colors, defaultMainPadding, screenWidth} from '../styles/constans';
+import {defaultMainPadding, screenWidth} from '../styles/constans';
 import {IAlbumInfo, ITrakAlbum} from '../types';
 import {AlbumLabel} from './AlbumLabel';
 import {GreyItalicText} from './ui/GreyItalicText';

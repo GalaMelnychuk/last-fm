@@ -17,7 +17,7 @@ import {Loader} from '../components/Loader';
 import {ErrorToast} from '../components/ErrorToast';
 import {colors, defaultMainPadding, screenWidth} from '../styles/constans';
 
-export interface ArtistDetailsScreen {
+export interface ArtistDetailsScreenProps {
   artist: string;
 }
 
