@@ -7,17 +7,12 @@ import {getTopAlbums} from '../services/requests';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../redux/rootReducer';
 
-import {colors, defaultMainPadding} from '../styles/constans';
 import {AlbumItem} from '../components/AlbumItem';
 import {Loader} from '../components/Loader';
 import {ErrorToast} from '../components/ErrorToast';
 import {ListPlaseholder} from '../components/ListPlaseholder';
 import {Button} from '../components/ui/Button';
-import {
-  clearTopAlbums,
-  setTopAlbums,
-  setTotalTopAlbums,
-} from '../features/topAlbumsSlice';
+import {setTopAlbums, setTotalTopAlbums} from '../features/topAlbumsSlice';
 import {RootContainer} from '../components/ui/RootContainer';
 import {SearchModal} from '../components/SearchModal';
 
@@ -31,7 +26,7 @@ export const HomeScreen = () => {
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [page, setPage] = useState(1);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [artist, setArtist] = useState('');
 
   useEffect(() => {
@@ -39,10 +34,8 @@ export const HomeScreen = () => {
   }, [artist]);
 
   const fetchData = async () => {
-    console.log('artist Home', artist);
     setLoading(true);
     const data = await getTopAlbums(page, artist);
-    console.log('pageNum getTopAlbums', page);
 
     if (data?.status === 200) {
       dispatch(setTopAlbums(data?.data?.topalbums?.album));
@@ -55,7 +48,6 @@ export const HomeScreen = () => {
   };
 
   const fetchMoreData = async (pageNum: number) => {
-    console.log('pageNum', pageNum);
     if (pageNum >= Number(topAlbums.total) || loading || loadingMore) {
       return;
     }

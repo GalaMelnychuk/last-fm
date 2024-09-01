@@ -1,26 +1,18 @@
 import React, {useEffect, useState} from 'react';
-
-import {RootContainer} from '../components/ui/RootContainer';
 import {Input} from '../components/ui/Input';
 import {artistSearch} from '../services/requests';
 import {Button} from '../components/ui/Button';
-import {useNavigation} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {MainStackParamList, ScreenEnum} from '../navigation/types';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../redux/rootReducer';
 import {
   ActivityIndicator,
   FlatList,
-  Modal,
-  Pressable,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
-import {AlbumItem} from '../components/AlbumItem';
-import {colors, defaultMainPadding} from '../styles/constans';
+import Modal from 'react-native-modalbox';
+import {colors, defaultMainPadding, screenHeight} from '../styles/constans';
 import {Loader} from '../components/Loader';
 import {ErrorToast} from '../components/ErrorToast';
 import {setArtistList, setTotalArtistList} from '../features/artistList';
@@ -31,6 +23,11 @@ export const SearchModal = ({
   setShowModal,
   setArtist,
   setAlbumPage,
+}: {
+  showModal: boolean;
+  setShowModal: (state: boolean) => void;
+  setArtist: (state: string) => void;
+  setAlbumPage: (state: number) => void;
 }) => {
   const dispatch = useDispatch();
   const artistList = useSelector((state: RootState) => state.artistList);
@@ -115,72 +112,93 @@ export const SearchModal = ({
   };
 
   return (
-    <Modal
-      visible={showModal}
-      animationType="slide"
-      transparent={true}
-      onRequestClose={() => {
-        setShowModal(!showModal);
-      }}>
-      <RootContainer wrapperStyle={{paddingTop: 20}}>
-        <Loader isLoading={loading} />
-        <ErrorToast
-          visible={!!errorText}
-          handleClose={handleErrorClose}
-          errorText={errorText}
-        />
-        <Input
-          value={seachValue}
-          onChangeText={text => setSearchValue(text)}
-          placeholderText="Artist Name"
-        />
-
-        <Button
-          containerStyles={{alignItems: 'center'}}
-          title={'🔍  Search'}
-          onPress={() => {
-            if (seachValue) {
-              fetchArtistList();
-            }
-          }}
-        />
-        {artistList?.items && artistList?.items?.length ? (
-          <FlatList
-            data={artistList.items}
-            renderItem={({item}) => (
-              <ArlistItem
-                name={item.name}
-                onPress={() => {
-                  console.log('item.name', item.name);
-                  setArtist(item.name);
-                  setAlbumPage(1);
-                  setShowModal(false);
-                }}
-              />
-            )}
-            contentContainerStyle={styles.list}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={(item, index) => index.toString()}
-            onEndReached={onEndReached}
-            onEndReachedThreshold={0.5}
-            ListFooterComponent={
-              loadingMore ? <ActivityIndicator size="small" /> : null
-            }
+    <View>
+      <Modal
+        isOpen={showModal}
+        style={styles.modal}
+        animationDuration={100}
+        position="bottom"
+        swipeToClose
+        onClosed={() => setShowModal(false)}
+        coverScreen>
+        <View style={styles.wrapper}>
+          <View style={styles.swipeLine} pointerEvents="none" />
+          <Loader isLoading={loading} />
+          <ErrorToast
+            visible={!!errorText}
+            handleClose={handleErrorClose}
+            errorText={errorText}
           />
-        ) : (
-          <Text>No matches</Text>
-        )}
-      </RootContainer>
-    </Modal>
+          <Input
+            value={seachValue}
+            onChangeText={text => setSearchValue(text)}
+            placeholderText="Artist Name"
+          />
+
+          <Button
+            containerStyles={{alignItems: 'center'}}
+            title={'🔍  Search'}
+            onPress={() => {
+              if (seachValue) {
+                fetchArtistList();
+              }
+            }}
+          />
+          {artistList?.items && !!artistList?.items?.length && (
+            <FlatList
+              data={artistList.items}
+              renderItem={({item}) => (
+                <ArlistItem
+                  name={item.name}
+                  onPress={() => {
+                    setArtist(item.name);
+                    setAlbumPage(1);
+                    setShowModal(false);
+                  }}
+                />
+              )}
+              contentContainerStyle={styles.list}
+              showsVerticalScrollIndicator={false}
+              keyExtractor={(item, index) => index.toString()}
+              onEndReached={onEndReached}
+              onEndReachedThreshold={0.5}
+              ListFooterComponent={
+                loadingMore ? <ActivityIndicator size="small" /> : null
+              }
+            />
+          )}
+          {noItems && <Text>No matches</Text>}
+        </View>
+      </Modal>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: defaultMainPadding,
-    backgroundColor: colors.white,
-  },
   list: {
     paddingBottom: 90,
+  },
+  modal: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: screenHeight - 50,
+    paddingBottom: 26,
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+    paddingHorizontal: defaultMainPadding,
+  },
+  wrapper: {
+    flex: 1,
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+  },
+  swipeLine: {
+    marginTop: 13,
+    marginBottom: 14,
+    width: 36,
+    height: 5,
+    borderRadius: 4,
+    alignSelf: 'center',
+    backgroundColor: colors.lightGrey,
   },
 });
