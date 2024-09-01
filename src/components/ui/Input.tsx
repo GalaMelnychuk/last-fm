@@ -1,5 +1,6 @@
 import React from 'react';
-import {StyleSheet, TextInput, View, ViewStyle} from 'react-native';
+import {TextInput, View, ViewStyle} from 'react-native';
+import {ScaledSheet} from 'react-native-size-matters';
 import {colors} from '../../styles/constans';
 
 interface Props {
@@ -31,15 +32,15 @@ export const Input: React.FC<Props> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   wrapper: {
     flexDirection: 'row',
   },
   input: {
-    height: 56,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    fontSize: 16,
+    height: '56@ms',
+    paddingHorizontal: '16@ms',
+    paddingVertical: '16@ms',
+    fontSize: '16@ms',
     borderColor: colors.purpur,
     borderWidth: 1,
     borderRadius: 8,

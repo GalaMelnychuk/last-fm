@@ -7,6 +7,7 @@ import {Text, SafeAreaView, StyleSheet, ScrollView, View} from 'react-native';
 import {MainStackParamList, ScreenEnum} from '../navigation/types';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+import messages from '../messages.json';
 import {RootState} from '../redux/rootReducer';
 import {fetchMyArtistInfo} from '../services/requests';
 import {
@@ -30,7 +31,6 @@ export const ArtistDetailsScreen: React.FC<Props> = ({route}) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<MainStackParamList>>();
   const dispatch = useDispatch();
-  const albumInfo = useSelector((state: RootState) => state.albumInfo);
   const artistDetails = useSelector((state: RootState) => state.artistDetails);
 
   const [errorText, setErrorText] = useState<string>('');
@@ -53,7 +53,7 @@ export const ArtistDetailsScreen: React.FC<Props> = ({route}) => {
       dispatch(setArtistDetails(data.data.artist));
     } else {
       dispatch(clearArtistDetails());
-      setErrorText('Something went wrong');
+      setErrorText(messages.common_error);
     }
     setLoading(false);
   };
@@ -95,7 +95,7 @@ export const ArtistDetailsScreen: React.FC<Props> = ({route}) => {
         <View style={{paddingBottom: 90, paddingTop: 20}}>
           <View>{formatText(artistDetails?.bio?.content)}</View>
           {noArtistInfo ? (
-            <Text style={styles.desc}>No info provided 🤷‍♂️</Text>
+            <Text style={styles.desc}>{messages.no_info}</Text>
           ) : null}
         </View>
       </ScrollView>

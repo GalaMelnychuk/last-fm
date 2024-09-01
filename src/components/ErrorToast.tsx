@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Modal, TouchableOpacity, Text} from 'react-native';
 import {colors} from '../styles/constans';
+import messages from '../messages.json';
 
 interface ErrorToastProps {
   visible: boolean;
@@ -18,7 +19,7 @@ export const ErrorToast = ({
         <View style={styles.toast}>
           <Text style={styles.error}>{errorText}</Text>
           <TouchableOpacity onPress={handleClose}>
-            <Text style={styles.btnText}>Close</Text>
+            <Text style={styles.btnText}>{messages.common_close}</Text>
           </TouchableOpacity>
         </View>
       </View>

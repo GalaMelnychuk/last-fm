@@ -1,12 +1,13 @@
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, FlatList, ActivityIndicator} from 'react-native';
+import {FlatList, ActivityIndicator} from 'react-native';
+import {ScaledSheet} from 'react-native-size-matters';
 import {MainStackParamList, ScreenEnum} from '../navigation/types';
 import {getTopAlbums} from '../services/requests';
 import {useDispatch, useSelector} from 'react-redux';
+import messages from '../messages.json';
 import {RootState} from '../redux/rootReducer';
-
 import {AlbumItem} from '../components/AlbumItem';
 import {Loader} from '../components/Loader';
 import {ErrorToast} from '../components/ErrorToast';
@@ -45,7 +46,7 @@ export const HomeScreen = () => {
       setPage(prev => prev + 1);
     } else {
       dispatch(setTopAlbums([]));
-      setErrorText('Something went wrong');
+      setErrorText(messages.common_error);
     }
     setLoading(false);
   };
@@ -63,7 +64,7 @@ export const HomeScreen = () => {
       dispatch(setTopAlbums([...topAlbums.items, ...res?.album]));
       setPage(prev => prev + 1);
     } else {
-      setErrorText('Something went wrong');
+      setErrorText(messages.common_error);
     }
     setLoadingMore(false);
   };
@@ -123,8 +124,9 @@ export const HomeScreen = () => {
       />
       {renderContent()}
       <Button
+        // @ts-ignore
         containerStyles={styles.btn}
-        title="I want to seek my artist"
+        title={messages.search_artist}
         onPress={openModal}
       />
       <SearchModal
@@ -137,14 +139,14 @@ export const HomeScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   list: {
-    paddingBottom: 110,
+    paddingBottom: '110@ms',
   },
   btn: {
     position: 'absolute',
     width: '100%',
     alignSelf: 'center',
-    bottom: 40,
+    bottom: '60@ms',
   },
 });

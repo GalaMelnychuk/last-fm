@@ -1,9 +1,11 @@
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
-import {Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {ScaledSheet} from 'react-native-size-matters';
+import {Text, TouchableOpacity} from 'react-native';
+import messages from '../messages.json';
 import {MainStackParamList, ScreenEnum} from '../navigation/types';
-import {colors} from '../styles/constans';
+import {colors, screenHeight} from '../styles/constans';
 import {useDispatch} from 'react-redux';
 import {resetName, setUserName} from '../features/userNameSlice';
 import {Input} from '../components/ui/Input';
@@ -34,53 +36,51 @@ export const SignInFormScreen = () => {
   };
 
   return (
+    // @ts-ignore
     <RootContainer wrapperStyle={styles.wrapper}>
       <Input
         value={name}
         onChangeText={setName}
-        placeholderText="Your Name on last.fm"
+        placeholderText={messages.welcome_your_name}
       />
-      <Text style={styles.infoText}>
-        *Please, enter your name as it is on last.fm to show your top albums or
-        login as a Guest
-      </Text>
+      <Text style={styles.infoText}>{messages.welcome_input_massage}</Text>
       <TouchableOpacity
         disabled={!name}
         onPress={logInUser}
         style={[styles.btn, styles.userBtn]}>
-        <Text style={styles.btnText}>Login as User</Text>
+        <Text style={styles.btnText}>{messages.welcome_login_user}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={logInGuest}
         style={[styles.btn, styles.guestBtn]}>
-        <Text style={styles.btnText}>Login as Guest</Text>
+        <Text style={styles.btnText}>{messages.welcome_login_guest}</Text>
       </TouchableOpacity>
     </RootContainer>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   wrapper: {
-    paddingTop: 120,
+    paddingTop: screenHeight * 0.15,
   },
   infoText: {
-    fontSize: 12,
+    fontSize: '12@ms',
     fontWeight: 'bold',
     color: colors.grey,
-    marginBottom: 16,
+    marginBottom: '16@ms',
   },
   btn: {
-    height: 56,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    fontSize: 16,
+    height: '56@ms',
+    paddingHorizontal: '16@ms',
+    paddingVertical: '16@ms',
+    fontSize: '16@ms',
     borderColor: colors.purpur,
-    borderRadius: 8,
+    borderRadius: '8@ms',
     width: '100%',
   },
   btnText: {
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: '18@ms',
     color: colors.white,
   },
   guestBtn: {
@@ -91,6 +91,6 @@ const styles = StyleSheet.create({
   userBtn: {
     backgroundColor: colors.purpur,
     alignItems: 'center',
-    marginBottom: 46,
+    marginBottom: '36@ms',
   },
 });

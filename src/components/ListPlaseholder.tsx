@@ -1,19 +1,15 @@
 import React from 'react';
 import {StyleSheet, Text} from 'react-native';
-import {screenHeight, colors} from '../styles/constans';
+import messages from '../messages.json';
+import {colors} from '../styles/constans';
 
 export const ListPlaseholder = () => {
-  return <Text style={styles.text}>{`No albums provided 🤷‍♂️`}</Text>;
+  return <Text style={styles.text}>{messages.no_albums}</Text>;
 };
 
 const styles = StyleSheet.create({
-  container: {
-    height: screenHeight / 2,
-    backgroundColor: colors.white,
-    paddingTop: 30,
-    alignItems: 'center',
-  },
   text: {
+    marginTop: 15,
     fontSize: 24,
     fontWeight: '600',
     color: colors.black,

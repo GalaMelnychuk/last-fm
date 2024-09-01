@@ -1,5 +1,6 @@
 import React from 'react';
 import {FlatList, StyleSheet, Text} from 'react-native';
+import messages from '../messages.json';
 import {defaultMainPadding, screenWidth} from '../styles/constans';
 import {IAlbumInfo, ITrakAlbum} from '../types';
 import {AlbumLabel} from './AlbumLabel';
@@ -32,9 +33,9 @@ export const TrackList: React.FC<Props> = ({data, album}) => {
             item={{image: album?.image, name: album?.name}}
           />
           {data && !!data.length ? (
-            <GreyItalicText text="Tracks:" style={styles.greyText} />
+            <GreyItalicText text={messages.tracks} style={styles.greyText} />
           ) : (
-            <GreyItalicText text="No tracks provided 👀" />
+            <GreyItalicText text={messages.no_tracks} />
           )}
         </>
       }

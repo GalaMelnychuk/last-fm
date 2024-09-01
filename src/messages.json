@@ -1,0 +1,17 @@
+{
+  "welcome_input_massage": "*Please, enter your name as it is on last.fm to show your top albums or login as a Guest",
+  "welcome_login_user": "Login as a User",
+  "welcome_login_guest": "Login as a Guest",
+  "welcome_your_name": "Your Name on last.fm",
+  "no_info": "No info provided 🤷‍♂️",
+  "tracks": "Tracks:",
+  "no_tracks": "No tracks provided 👀",
+  "common_error": "Something went wrong",
+  "artist_name": "Artist Name",
+  "search": "🔍  Search",
+  "no_matches": "No matches",
+  "loading": "Loading...",
+  "no_albums": "No albums provided 🤷‍♂️",
+  "common_close": "Close",
+  "search_artist": "I want to seek my artist"
+}

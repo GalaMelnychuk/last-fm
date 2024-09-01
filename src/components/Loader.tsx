@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
+import messages from '../messages.json';
 import {screenHeight, colors} from '../styles/constans';
 
 export const Loader = ({isLoading}: {isLoading: boolean}) => {
@@ -7,7 +8,7 @@ export const Loader = ({isLoading}: {isLoading: boolean}) => {
     <>
       {isLoading && (
         <View style={styles.container}>
-          <Text style={styles.text}>Loading...</Text>
+          <Text style={styles.text}>{messages.loading}</Text>
         </View>
       )}
     </>

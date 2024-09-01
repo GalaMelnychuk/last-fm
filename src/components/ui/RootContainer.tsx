@@ -1,5 +1,6 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, View, ViewStyle} from 'react-native';
+import {SafeAreaView, View, ViewStyle} from 'react-native';
+import {ScaledSheet} from 'react-native-size-matters';
 import {colors, defaultMainPadding, screenHeight} from '../../styles/constans';
 
 interface Props {
@@ -15,7 +16,7 @@ export const RootContainer: React.FC<Props> = ({children, wrapperStyle}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   container: {
     height: screenHeight,
     backgroundColor: colors.white,

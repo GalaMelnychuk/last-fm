@@ -3,7 +3,6 @@ import {Input} from '../components/ui/Input';
 import {artistSearch} from '../services/requests';
 import {Button} from '../components/ui/Button';
 import {useDispatch, useSelector} from 'react-redux';
-import {RootState} from '../redux/rootReducer';
 import {
   ActivityIndicator,
   FlatList,
@@ -12,6 +11,8 @@ import {
   View,
 } from 'react-native';
 import Modal from 'react-native-modalbox';
+import {RootState} from '../redux/rootReducer';
+import messages from '../messages.json';
 import {colors, defaultMainPadding, screenHeight} from '../styles/constans';
 import {Loader} from '../components/Loader';
 import {ErrorToast} from '../components/ErrorToast';
@@ -67,16 +68,16 @@ export const SearchModal: React.FC<Props> = ({
 
     if (data?.status === 200) {
       const res = data?.data?.results;
-      dispatch(setArtistList(res?.artistmatches?.artist));
-      dispatch(setTotalArtistList(res['opensearch:totalResults']));
-
       if (res['opensearch:totalResults'] === '0') {
         setNoItems(true);
+      } else {
+        dispatch(setArtistList(res?.artistmatches?.artist));
+        dispatch(setTotalArtistList(res['opensearch:totalResults']));
+        setPage(prev => prev + 1);
       }
-      setPage(prev => prev + 1);
     } else {
       dispatch(setArtistList([]));
-      setErrorText('Something went wrong');
+      setErrorText(messages.common_error);
     }
     setLoading(false);
   };
@@ -96,7 +97,7 @@ export const SearchModal: React.FC<Props> = ({
       );
       setPage(prev => prev + 1);
     } else {
-      setErrorText('Something went wrong');
+      setErrorText(messages.common_error);
     }
     setLoadingMore(false);
   };
@@ -119,6 +120,15 @@ export const SearchModal: React.FC<Props> = ({
     setErrorText('');
   };
 
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const onItemPress = (name: string) => {
+    setArtist(name);
+    setShowModal(false);
+  };
+
   return (
     <View>
       <Modal
@@ -127,7 +137,7 @@ export const SearchModal: React.FC<Props> = ({
         animationDuration={100}
         position="bottom"
         swipeToClose
-        onClosed={() => setShowModal(false)}
+        onClosed={closeModal}
         coverScreen>
         <View style={styles.wrapper}>
           <View style={styles.swipeLine} pointerEvents="none" />
@@ -140,12 +150,12 @@ export const SearchModal: React.FC<Props> = ({
           <Input
             value={seachValue}
             onChangeText={text => setSearchValue(text)}
-            placeholderText="Artist Name"
+            placeholderText={messages.artist_name}
           />
 
           <Button
-            containerStyles={{alignItems: 'center'}}
-            title={'🔍  Search'}
+            containerStyles={styles.btn}
+            title={messages.search}
             onPress={handleSearch}
           />
           {artistList?.items && !!artistList?.items?.length && (
@@ -154,10 +164,7 @@ export const SearchModal: React.FC<Props> = ({
               renderItem={({item}) => (
                 <ArlistItem
                   name={item.name}
-                  onPress={() => {
-                    setArtist(item.name);
-                    setShowModal(false);
-                  }}
+                  onPress={() => onItemPress(item.name)}
                 />
               )}
               contentContainerStyle={styles.list}
@@ -170,7 +177,7 @@ export const SearchModal: React.FC<Props> = ({
               }
             />
           )}
-          {noItems && <Text>No matches</Text>}
+          {noItems && <Text>{messages.no_matches}</Text>}
         </View>
       </Modal>
     </View>
@@ -203,5 +210,8 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     alignSelf: 'center',
     backgroundColor: colors.lightGrey,
+  },
+  btn: {
+    alignItems: 'center',
   },
 });

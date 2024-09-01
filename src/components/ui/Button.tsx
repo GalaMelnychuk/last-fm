@@ -1,11 +1,6 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextStyle,
-  TouchableOpacity,
-  ViewStyle,
-} from 'react-native';
+import {Text, TextStyle, TouchableOpacity, ViewStyle} from 'react-native';
+import {ScaledSheet} from 'react-native-size-matters';
 import {colors} from '../../styles/constans';
 
 interface Props {
@@ -33,20 +28,20 @@ export const Button: React.FC<Props> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   text: {
     fontWeight: '800',
     color: colors.darkGrey,
-    fontSize: 18,
+    fontSize: '18@ms',
     marginBottom: 5,
   },
   btn: {
-    marginTop: 12,
-    marginBottom: 26,
-    padding: 10,
+    marginTop: '12@ms',
+    marginBottom: '16@ms',
+    padding: '10@ms',
     borderWidth: 1,
     borderColor: colors.lightGrey,
-    borderRadius: 8,
+    borderRadius: '8@ms',
     backgroundColor: colors.liveLight,
   },
 });
