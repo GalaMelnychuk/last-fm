@@ -1,18 +1,13 @@
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
-import {
-  Text,
-  SafeAreaView,
-  StyleSheet,
-  View,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import {Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {MainStackParamList, ScreenEnum} from '../navigation/types';
-import {colors, defaultMainPadding, screenHeight} from '../styles/constans';
+import {colors} from '../styles/constans';
 import {useDispatch} from 'react-redux';
 import {resetName, setUserName} from '../features/userNameSlice';
+import {Input} from '../components/ui/Input';
+import {RootContainer} from '../components/ui/RootContainer';
 
 export const SignInFormScreen = () => {
   const navigation =
@@ -39,21 +34,12 @@ export const SignInFormScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.wrapper}>
-        <TextInput
-          style={styles.input}
-          value={name}
-          underlineColorAndroid="transparent"
-          autoCorrect={false}
-          autoCapitalize="words"
-          placeholder={'Name'}
-          placeholderTextColor={colors.grey}
-          blurOnSubmit
-          onChangeText={setName}
-          onSubmitEditing={() => {}}
-        />
-      </View>
+    <RootContainer wrapperStyle={styles.wrapper}>
+      <Input
+        value={name}
+        onChangeText={setName}
+        placeholderText="Your Name on last.fm"
+      />
       <Text style={styles.infoText}>
         *Please, enter your name as it is on last.fm to show your albums or
         login as a Guest
@@ -61,28 +47,21 @@ export const SignInFormScreen = () => {
       <TouchableOpacity
         disabled={!name}
         onPress={logInUser}
-        style={[styles.input, styles.userBtn]}>
+        style={[styles.btn, styles.userBtn]}>
         <Text style={styles.btnText}>Login as User</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={logInGuest}
-        style={[styles.input, styles.guestBtn]}>
+        style={[styles.btn, styles.guestBtn]}>
         <Text style={styles.btnText}>Login as Guest</Text>
       </TouchableOpacity>
-    </SafeAreaView>
+    </RootContainer>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    height: screenHeight,
-    backgroundColor: colors.white,
-    alignItems: 'center',
-    paddingHorizontal: defaultMainPadding,
-  },
   wrapper: {
     paddingTop: 120,
-    flexDirection: 'row',
   },
   infoText: {
     fontSize: 12,
@@ -90,13 +69,12 @@ const styles = StyleSheet.create({
     color: colors.grey,
     marginBottom: 16,
   },
-  input: {
+  btn: {
     height: 56,
     paddingHorizontal: 16,
     paddingVertical: 16,
     fontSize: 16,
     borderColor: colors.purpur,
-    borderWidth: 1,
     borderRadius: 8,
     width: '100%',
   },
@@ -112,7 +90,6 @@ const styles = StyleSheet.create({
   },
   userBtn: {
     backgroundColor: colors.purpur,
-    borderWidth: 0,
     alignItems: 'center',
     marginBottom: 46,
   },

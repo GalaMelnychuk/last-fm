@@ -1,24 +1,27 @@
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  FlatList,
-  ActivityIndicator,
-} from 'react-native';
+import {StyleSheet, FlatList, ActivityIndicator} from 'react-native';
 import {MainStackParamList, ScreenEnum} from '../navigation/types';
 import {getTopAlbums} from '../services/requests';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../redux/rootReducer';
-import {setAlbums, setTotal} from '../features/topAlbumsSlice';
+
 import {colors, defaultMainPadding} from '../styles/constans';
 import {AlbumItem} from '../components/AlbumItem';
 import {Loader} from '../components/Loader';
 import {ErrorToast} from '../components/ErrorToast';
 import {ListPlaseholder} from '../components/ListPlaseholder';
+import {Button} from '../components/ui/Button';
+import {
+  clearTopAlbums,
+  setTopAlbums,
+  setTotalTopAlbums,
+} from '../features/topAlbumsSlice';
+import {RootContainer} from '../components/ui/RootContainer';
+import {SearchModal} from '../components/SearchModal';
 
-export const HomeScreen: React.FC = () => {
+export const HomeScreen = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<MainStackParamList>>();
   const dispatch = useDispatch();
@@ -28,35 +31,42 @@ export const HomeScreen: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [page, setPage] = useState(1);
+  const [showModal, setShowModal] = useState(false);
+  const [artist, setArtist] = useState('');
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [artist]);
 
   const fetchData = async () => {
+    console.log('artist Home', artist);
     setLoading(true);
-    const data = await getTopAlbums(page);
+    const data = await getTopAlbums(page, artist);
+    console.log('pageNum getTopAlbums', page);
 
     if (data?.status === 200) {
-      dispatch(setAlbums(data?.data?.topalbums?.album));
-      dispatch(setTotal(data?.data?.topalbums['@attr']?.totalPages));
+      dispatch(setTopAlbums(data?.data?.topalbums?.album));
+      dispatch(setTotalTopAlbums(data?.data?.topalbums['@attr']?.totalPages));
     } else {
-      dispatch(setAlbums([]));
+      dispatch(setTopAlbums([]));
       setErrorText('Something went wrong');
     }
     setLoading(false);
   };
 
   const fetchMoreData = async (pageNum: number) => {
+    console.log('pageNum', pageNum);
     if (pageNum >= Number(topAlbums.total) || loading || loadingMore) {
       return;
     }
 
     setLoadingMore(true);
-    const data = await getTopAlbums(pageNum);
+    const data = await getTopAlbums(pageNum, artist);
 
     if (data?.status === 200) {
-      dispatch(setAlbums([...topAlbums.items, ...data.data.topalbums.album]));
+      dispatch(
+        setTopAlbums([...topAlbums.items, ...data.data.topalbums.album]),
+      );
     } else {
       setErrorText('Something went wrong');
     }
@@ -90,6 +100,7 @@ export const HomeScreen: React.FC = () => {
               onPress={() => navToAlbum(item.artist.name, item.name)}
             />
           )}
+          contentContainerStyle={styles.list}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => index.toString()}
           onEndReached={onEndReached}
@@ -105,7 +116,7 @@ export const HomeScreen: React.FC = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <RootContainer>
       <Loader isLoading={loading} />
       <ErrorToast
         visible={!!errorText}
@@ -113,13 +124,29 @@ export const HomeScreen: React.FC = () => {
         errorText={errorText}
       />
       {renderContent()}
-    </SafeAreaView>
+      <Button
+        containerStyles={styles.btn}
+        title="I want to seek my artist"
+        onPress={() => setShowModal(true)}
+      />
+      <SearchModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        setArtist={setArtist}
+        setAlbumPage={setPage}
+      />
+    </RootContainer>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: defaultMainPadding,
-    backgroundColor: colors.white,
+  list: {
+    paddingBottom: 90,
+  },
+  btn: {
+    position: 'absolute',
+    width: '100%',
+    alignSelf: 'center',
+    bottom: 40,
   },
 });

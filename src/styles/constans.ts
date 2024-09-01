@@ -14,6 +14,8 @@ export const colors = {
   blue: '#1bbbd6',
   purpur: '#7b7fff',
   darkGrey: '#3f4357',
+  liveLight: '#ecf5f8',
+  whiteSmoke: '#f6f6f6',
 };
 
 export const defaultMainPadding = 24;

@@ -14,27 +14,28 @@ export const topAlbumsSlice = createSlice({
   name: 'topAlbums',
   initialState,
   reducers: {
-    setAlbums: (state, action) => {
+    setTopAlbums: (state, action) => {
       state = {
         ...state,
         items: action.payload,
       };
       return state;
     },
-    setTotal: (state, action) => {
+    setTotalTopAlbums: (state, action) => {
       state = {
         ...state,
         total: action.payload,
       };
       return state;
     },
-    clearAlbums: state => {
+    clearTopAlbums: state => {
       state = initialState;
       return state;
     },
   },
 });
 
-export const {setAlbums, setTotal, clearAlbums} = topAlbumsSlice.actions;
+export const {setTopAlbums, setTotalTopAlbums, clearTopAlbums} =
+  topAlbumsSlice.actions;
 
 export const topAlbumsReducer = topAlbumsSlice.reducer;

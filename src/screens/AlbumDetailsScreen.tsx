@@ -82,6 +82,9 @@ export const AlbumDetailsScreen: React.FC<Props> = ({route}) => {
     }
   };
 
+  const noAlbumInfo = !albumInfo?.wiki?.content;
+  const noArtistInfo = !artistDetails?.bio?.content;
+
   return (
     <SafeAreaView style={styles.container}>
       <Loader isLoading={loading} />
@@ -103,7 +106,7 @@ export const AlbumDetailsScreen: React.FC<Props> = ({route}) => {
         <View style={styles.textContainer}>
           {formatText(albumInfo?.wiki?.content)}
         </View>
-        {!albumInfo?.wiki?.content && !artistDetails?.bio?.content ? (
+        {noAlbumInfo && noArtistInfo ? (
           <Text style={styles.desc}>No info provided 🤷‍♂️</Text>
         ) : null}
       </ScrollView>

@@ -14,6 +14,7 @@ import {Loader} from '../components/Loader';
 import {ErrorToast} from '../components/ErrorToast';
 import {colors, defaultMainPadding} from '../styles/constans';
 import {TrackList} from '../components/TrackList';
+import {Button} from '../components/ui/Button';
 
 export interface AlbumTracksScreenProps {
   artist: string;
@@ -76,9 +77,7 @@ export const AlbumTracksScreen: React.FC<Props> = ({route}) => {
         errorText={errorText}
       />
       <TrackList data={albumInfo.tracks?.track} album={albumInfo} />
-      <TouchableOpacity style={styles.btn} onPress={navToArtist}>
-        <Text style={styles.text}>Read more about the album</Text>
-      </TouchableOpacity>
+      <Button title="Read more about the album" onPress={navToArtist} />
     </SafeAreaView>
   );
 };
@@ -88,19 +87,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: defaultMainPadding,
     backgroundColor: colors.white,
     flex: 1,
-  },
-  text: {
-    fontWeight: '800',
-    color: colors.darkGrey,
-    fontSize: 18,
-    marginBottom: 5,
-  },
-  btn: {
-    marginTop: 12,
-    marginBottom: 26,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: colors.lightGrey,
-    borderRadius: 8,
   },
 });

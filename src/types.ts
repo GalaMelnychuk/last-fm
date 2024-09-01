@@ -69,6 +69,15 @@ export interface IArtistInfo {
   url: string;
 }
 
+export interface ISearchedArtistItem {
+  image: IImage[] | [];
+  mbid: string;
+  name: string;
+  url: string;
+  streamable: string;
+  listeners: string;
+}
+
 interface Response {
   config: any;
   headers: any;
@@ -95,5 +104,27 @@ export interface ResponseAlbumInfo extends Response {
 export interface ResponseArtistInfo extends Response {
   data: {
     artist: IArtistInfo;
+  };
+}
+export interface ResponseArtistList extends Response {
+  data: {
+    results: {
+      '@attr': {
+        for: string;
+      };
+      artistmatches: {
+        artist: ISearchedArtistItem[] | [];
+      };
+
+      'opensearch:Query': {
+        role: string;
+        searchTerms: string;
+        startPage: string;
+        '#text': string;
+      };
+      'opensearch:itemsPerPage': string;
+      'opensearch:startIndex': string;
+      'opensearch:totalResults': string;
+    };
   };
 }

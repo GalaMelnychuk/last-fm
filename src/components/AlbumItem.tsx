@@ -12,7 +12,7 @@ interface Props {
 
 export const AlbumItem: React.FC<Props> = ({item, onPress}) => {
   const uri =
-    item?.image[3]['#text'] || item?.image?.find(el => el['#text'])?.['#text'];
+    item?.image[2]['#text'] || item?.image?.find(el => el['#text'])?.['#text'];
 
   return (
     <View>
