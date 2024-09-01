@@ -1,8 +1,7 @@
-### To lounch the project:
+### To run the project:
 
 ```
 yarn
-
 
 cd ./ios
 
