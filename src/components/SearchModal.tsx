@@ -35,6 +35,7 @@ export const SearchModal: React.FC<Props> = ({
   const dispatch = useDispatch();
   const artistList = useSelector((state: RootState) => state.artistList);
 
+  const [inputName, setInputName] = useState('');
   const [seachValue, setSearchValue] = useState('');
   const [errorText, setErrorText] = useState<string>('');
   const [loading, setLoading] = useState(false);
@@ -45,6 +46,7 @@ export const SearchModal: React.FC<Props> = ({
   useEffect(() => {
     return () => {
       setSearchValue('');
+      setInputName('');
       setPage(1);
       dispatch(setArtistList([]));
       dispatch(setTotalArtistList('0'));
@@ -55,24 +57,24 @@ export const SearchModal: React.FC<Props> = ({
   useEffect(() => {
     setPage(1);
 
-    if (!seachValue) {
+    if (!inputName) {
       dispatch(setArtistList([]));
       dispatch(setTotalArtistList('0'));
       setNoItems(false);
     }
-  }, [seachValue]);
+  }, [inputName]);
 
   const fetchArtistList = async () => {
     setLoading(true);
-    const data = await artistSearch(seachValue, page);
+    const data = await artistSearch(inputName, page);
 
     if (data?.status === 200) {
       const res = data?.data?.results;
-      if (res['opensearch:totalResults'] === '0') {
+      if (res?.['opensearch:totalResults'] === '0') {
         setNoItems(true);
       } else {
         dispatch(setArtistList(res?.artistmatches?.artist));
-        dispatch(setTotalArtistList(res['opensearch:totalResults']));
+        dispatch(setTotalArtistList(res?.['opensearch:totalResults']));
         setPage(prev => prev + 1);
       }
     } else {
@@ -88,7 +90,7 @@ export const SearchModal: React.FC<Props> = ({
     }
 
     setLoadingMore(true);
-    const data = await artistSearch(seachValue, pageNum);
+    const data = await artistSearch(inputName, pageNum);
 
     if (data?.status === 200) {
       const res = data?.data?.results;
@@ -107,11 +109,12 @@ export const SearchModal: React.FC<Props> = ({
   };
 
   const handleSearch = () => {
-    if (seachValue) {
+    if (inputName && inputName != seachValue) {
       setPage(1);
-      fetchArtistList();
       setAlbumPage(1);
       setNoItems(false);
+      setSearchValue(inputName);
+      fetchArtistList();
     }
     return null;
   };
@@ -148,8 +151,8 @@ export const SearchModal: React.FC<Props> = ({
             errorText={errorText}
           />
           <Input
-            value={seachValue}
-            onChangeText={text => setSearchValue(text)}
+            value={inputName}
+            onChangeText={setInputName}
             placeholderText={messages.artist_name}
           />
 

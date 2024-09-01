@@ -42,7 +42,7 @@ export const HomeScreen = () => {
       const res = data?.data?.topalbums;
 
       dispatch(setTopAlbums(res?.album));
-      dispatch(setTotalTopAlbums(res['@attr']?.totalPages));
+      dispatch(setTotalTopAlbums(res?.['@attr']?.totalPages));
       setPage(prev => prev + 1);
     } else {
       dispatch(setTopAlbums([]));
