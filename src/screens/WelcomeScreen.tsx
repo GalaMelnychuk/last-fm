@@ -41,7 +41,7 @@ export const SignInFormScreen = () => {
         placeholderText="Your Name on last.fm"
       />
       <Text style={styles.infoText}>
-        *Please, enter your name as it is on last.fm to show your albums or
+        *Please, enter your name as it is on last.fm to show your top albums or
         login as a Guest
       </Text>
       <TouchableOpacity

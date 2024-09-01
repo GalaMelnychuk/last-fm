@@ -38,8 +38,11 @@ export const HomeScreen = () => {
     const data = await getTopAlbums(page, artist);
 
     if (data?.status === 200) {
-      dispatch(setTopAlbums(data?.data?.topalbums?.album));
-      dispatch(setTotalTopAlbums(data?.data?.topalbums['@attr']?.totalPages));
+      const res = data?.data?.topalbums;
+
+      dispatch(setTopAlbums(res?.album));
+      dispatch(setTotalTopAlbums(res['@attr']?.totalPages));
+      setPage(prev => prev + 1);
     } else {
       dispatch(setTopAlbums([]));
       setErrorText('Something went wrong');
@@ -59,6 +62,7 @@ export const HomeScreen = () => {
       dispatch(
         setTopAlbums([...topAlbums.items, ...data.data.topalbums.album]),
       );
+      setPage(prev => prev + 1);
     } else {
       setErrorText('Something went wrong');
     }
@@ -66,10 +70,7 @@ export const HomeScreen = () => {
   };
 
   const onEndReached = () => {
-    setPage(prev => {
-      fetchMoreData(prev + 1);
-      return prev + 1;
-    });
+    fetchMoreData(page);
   };
 
   const navToAlbum = async (artist: string, album: string) => {
@@ -133,7 +134,7 @@ export const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   list: {
-    paddingBottom: 90,
+    paddingBottom: 110,
   },
   btn: {
     position: 'absolute',

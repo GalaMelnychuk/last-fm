@@ -46,6 +46,7 @@ export const SearchModal = ({
       setPage(1);
       dispatch(setArtistList([]));
       dispatch(setTotalArtistList('0'));
+      setNoItems(false);
     };
   }, []);
 
@@ -53,6 +54,7 @@ export const SearchModal = ({
     if (!seachValue) {
       dispatch(setArtistList([]));
       dispatch(setTotalArtistList('0'));
+      setNoItems(false);
     }
   }, [seachValue]);
 
@@ -65,10 +67,14 @@ export const SearchModal = ({
     const data = await artistSearch(seachValue, page);
 
     if (data?.status === 200) {
-      dispatch(setArtistList(data?.data?.results?.artistmatches?.artist));
-      dispatch(
-        setTotalArtistList(data?.data?.results['opensearch:itemsPerPage']),
-      );
+      const res = data?.data?.results;
+      dispatch(setArtistList(res?.artistmatches?.artist));
+      dispatch(setTotalArtistList(res['opensearch:totalResults']));
+
+      if (res['opensearch:totalResults'] === '0') {
+        setNoItems(true);
+      }
+      setPage(prev => prev + 1);
     } else {
       dispatch(setArtistList([]));
       setErrorText('Something went wrong');
@@ -85,15 +91,13 @@ export const SearchModal = ({
     const data = await artistSearch(seachValue, pageNum);
 
     if (data?.status === 200) {
-      if (!data?.data?.results?.artistmatches?.artist?.length) {
-        setNoItems(true);
-      }
       dispatch(
         setArtistList([
           ...artistList.items,
           ...data?.data?.results?.artistmatches?.artist,
         ]),
       );
+      setPage(prev => prev + 1);
     } else {
       setErrorText('Something went wrong');
     }
@@ -101,10 +105,7 @@ export const SearchModal = ({
   };
 
   const onEndReached = () => {
-    setPage(prev => {
-      fetchMoreArtistList(prev + 1);
-      return prev + 1;
-    });
+    fetchMoreArtistList(page);
   };
 
   const handleErrorClose = () => {
@@ -140,7 +141,10 @@ export const SearchModal = ({
             title={'🔍  Search'}
             onPress={() => {
               if (seachValue) {
+                setPage(1);
                 fetchArtistList();
+                setAlbumPage(1);
+                setNoItems(false);
               }
             }}
           />
@@ -152,7 +156,6 @@ export const SearchModal = ({
                   name={item.name}
                   onPress={() => {
                     setArtist(item.name);
-                    setAlbumPage(1);
                     setShowModal(false);
                   }}
                 />
@@ -161,7 +164,7 @@ export const SearchModal = ({
               showsVerticalScrollIndicator={false}
               keyExtractor={(item, index) => index.toString()}
               onEndReached={onEndReached}
-              onEndReachedThreshold={0.5}
+              onEndReachedThreshold={1}
               ListFooterComponent={
                 loadingMore ? <ActivityIndicator size="small" /> : null
               }

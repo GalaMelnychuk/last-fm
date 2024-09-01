@@ -12,6 +12,8 @@ import {store} from '../redux/store';
 export const getTopAlbums = async (page: number, artist?: string) => {
   const user = store.getState().userName || 'rj';
 
+  console.log('page', page);
+
   const queryUrl = artist
     ? `artist.gettopalbums&artist=${artist}`
     : `user.gettopalbums&user=${user}`;
@@ -56,6 +58,7 @@ export const fetchMyArtistInfo = async (artist: string) => {
 };
 
 export const artistSearch = async (artist: string, page: number) => {
+  console.log('artistSearch page', page);
   try {
     const data: ResponseArtistList = await axios({
       url: `${BASE_URL}?method=artist.search&artist=${artist}&api_key=${API_KEY}&format=json`,
