@@ -18,22 +18,23 @@ import {ErrorToast} from '../components/ErrorToast';
 import {setArtistList, setTotalArtistList} from '../features/artistList';
 import {ArlistItem} from '../components/ui/ArtistItem';
 
-export const SearchModal = ({
-  showModal,
-  setShowModal,
-  setArtist,
-  setAlbumPage,
-}: {
+interface Props {
   showModal: boolean;
   setShowModal: (state: boolean) => void;
   setArtist: (state: string) => void;
   setAlbumPage: (state: number) => void;
+}
+
+export const SearchModal: React.FC<Props> = ({
+  showModal,
+  setShowModal,
+  setArtist,
+  setAlbumPage,
 }) => {
   const dispatch = useDispatch();
   const artistList = useSelector((state: RootState) => state.artistList);
 
   const [seachValue, setSearchValue] = useState('');
-
   const [errorText, setErrorText] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -51,15 +52,13 @@ export const SearchModal = ({
   }, []);
 
   useEffect(() => {
+    setPage(1);
+
     if (!seachValue) {
       dispatch(setArtistList([]));
       dispatch(setTotalArtistList('0'));
       setNoItems(false);
     }
-  }, [seachValue]);
-
-  useEffect(() => {
-    setPage(1);
   }, [seachValue]);
 
   const fetchArtistList = async () => {
@@ -91,11 +90,9 @@ export const SearchModal = ({
     const data = await artistSearch(seachValue, pageNum);
 
     if (data?.status === 200) {
+      const res = data?.data?.results;
       dispatch(
-        setArtistList([
-          ...artistList.items,
-          ...data?.data?.results?.artistmatches?.artist,
-        ]),
+        setArtistList([...artistList.items, ...res?.artistmatches?.artist]),
       );
       setPage(prev => prev + 1);
     } else {
@@ -106,6 +103,16 @@ export const SearchModal = ({
 
   const onEndReached = () => {
     fetchMoreArtistList(page);
+  };
+
+  const handleSearch = () => {
+    if (seachValue) {
+      setPage(1);
+      fetchArtistList();
+      setAlbumPage(1);
+      setNoItems(false);
+    }
+    return null;
   };
 
   const handleErrorClose = () => {
@@ -139,14 +146,7 @@ export const SearchModal = ({
           <Button
             containerStyles={{alignItems: 'center'}}
             title={'🔍  Search'}
-            onPress={() => {
-              if (seachValue) {
-                setPage(1);
-                fetchArtistList();
-                setAlbumPage(1);
-                setNoItems(false);
-              }
-            }}
+            onPress={handleSearch}
           />
           {artistList?.items && !!artistList?.items?.length && (
             <FlatList

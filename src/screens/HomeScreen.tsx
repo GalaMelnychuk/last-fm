@@ -59,9 +59,8 @@ export const HomeScreen = () => {
     const data = await getTopAlbums(pageNum, artist);
 
     if (data?.status === 200) {
-      dispatch(
-        setTopAlbums([...topAlbums.items, ...data.data.topalbums.album]),
-      );
+      const res = data?.data?.topalbums;
+      dispatch(setTopAlbums([...topAlbums.items, ...res?.album]));
       setPage(prev => prev + 1);
     } else {
       setErrorText('Something went wrong');
@@ -75,6 +74,10 @@ export const HomeScreen = () => {
 
   const navToAlbum = async (artist: string, album: string) => {
     navigation.navigate(ScreenEnum.AlbumTracksScreen, {artist, album});
+  };
+
+  const openModal = () => {
+    setShowModal(true);
   };
 
   const handleErrorClose = () => {
@@ -105,7 +108,9 @@ export const HomeScreen = () => {
       );
     } else if (!errorText) {
       return <ListPlaseholder />;
-    } else null;
+    } else {
+      return null;
+    }
   };
 
   return (
@@ -120,7 +125,7 @@ export const HomeScreen = () => {
       <Button
         containerStyles={styles.btn}
         title="I want to seek my artist"
-        onPress={() => setShowModal(true)}
+        onPress={openModal}
       />
       <SearchModal
         showModal={showModal}

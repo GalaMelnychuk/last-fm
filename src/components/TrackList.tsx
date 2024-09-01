@@ -1,6 +1,6 @@
 import React from 'react';
 import {FlatList, StyleSheet, Text} from 'react-native';
-import {colors} from '../styles/constans';
+import {colors, defaultMainPadding, screenWidth} from '../styles/constans';
 import {IAlbumInfo, ITrakAlbum} from '../types';
 import {AlbumLabel} from './AlbumLabel';
 import {GreyItalicText} from './ui/GreyItalicText';
@@ -27,7 +27,10 @@ export const TrackList: React.FC<Props> = ({data, album}) => {
       showsVerticalScrollIndicator={false}
       ListHeaderComponent={
         <>
-          <AlbumLabel item={{image: album?.image, name: album?.name}} />
+          <AlbumLabel
+            style={styles.label}
+            item={{image: album?.image, name: album?.name}}
+          />
           {data && !!data.length ? (
             <GreyItalicText text="Tracks:" style={styles.greyText} />
           ) : (
@@ -49,5 +52,10 @@ const styles = StyleSheet.create({
   },
   list: {
     paddingVertical: 20,
+  },
+  label: {
+    width: screenWidth - defaultMainPadding * 2,
+    height: screenWidth - defaultMainPadding * 2,
+    borderRadius: 8,
   },
 });

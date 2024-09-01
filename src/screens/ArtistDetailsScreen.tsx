@@ -15,21 +15,18 @@ import {
 } from '../features/artistDetailsSlice';
 import {Loader} from '../components/Loader';
 import {ErrorToast} from '../components/ErrorToast';
-import {AlbumLabel} from '../components/AlbumLabel';
 import {colors, defaultMainPadding, screenWidth} from '../styles/constans';
-import {GreyItalicText} from '../components/ui/GreyItalicText';
-import {BlackBoldText} from '../components/ui/BlackBoldText';
 
-export interface AlbumDetailsScreenProps {
+export interface ArtistDetailsScreen {
   artist: string;
 }
 
 type Props = NativeStackScreenProps<
   MainStackParamList,
-  ScreenEnum.AlbumDetailsScreen
+  ScreenEnum.ArtistDetailsScreen
 >;
 
-export const AlbumDetailsScreen: React.FC<Props> = ({route}) => {
+export const ArtistDetailsScreen: React.FC<Props> = ({route}) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<MainStackParamList>>();
   const dispatch = useDispatch();
@@ -81,8 +78,6 @@ export const AlbumDetailsScreen: React.FC<Props> = ({route}) => {
       return null;
     }
   };
-
-  const noAlbumInfo = !albumInfo?.wiki?.content;
   const noArtistInfo = !artistDetails?.bio?.content;
 
   return (
@@ -97,18 +92,12 @@ export const AlbumDetailsScreen: React.FC<Props> = ({route}) => {
         contentInsetAdjustmentBehavior="automatic"
         showsVerticalScrollIndicator={false}
         style={styles.scrollCont}>
-        <AlbumLabel style={styles.label} item={{image: albumInfo?.image}} />
-        <GreyItalicText text="Name:" />
-        <BlackBoldText text={albumInfo.name} style={styles.boldText} />
-        <GreyItalicText text="Artist:" />
-        <BlackBoldText text={albumInfo.artist} style={styles.boldText} />
-        <View>{formatText(artistDetails?.bio?.content)}</View>
-        <View style={styles.textContainer}>
-          {formatText(albumInfo?.wiki?.content)}
+        <View style={{paddingBottom: 90, paddingTop: 20}}>
+          <View>{formatText(artistDetails?.bio?.content)}</View>
+          {noArtistInfo ? (
+            <Text style={styles.desc}>No info provided 🤷‍♂️</Text>
+          ) : null}
         </View>
-        {noAlbumInfo && noArtistInfo ? (
-          <Text style={styles.desc}>No info provided 🤷‍♂️</Text>
-        ) : null}
       </ScrollView>
     </SafeAreaView>
   );
@@ -137,9 +126,9 @@ const styles = StyleSheet.create({
   desc: {
     color: colors.darkGrey,
     lineHeight: 22,
+    fontSize: 16,
   },
   scrollCont: {
-    paddingTop: 20,
     height: '100%',
   },
   label: {

@@ -4,7 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {MainStackParamList, ScreenEnum} from './types';
 import {HomeScreen} from '../screens/HomeScreen';
 import {SignInFormScreen} from '../screens/WelcomeScreen';
-import {AlbumDetailsScreen} from '../screens/AlbumDetailsScreen';
+import {ArtistDetailsScreen} from '../screens/ArtistDetailsScreen';
 import {AlbumTracksScreen} from '../screens/AlbumTracksScreen';
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
@@ -22,7 +22,7 @@ export const MainStack = () => {
           name={ScreenEnum.HomeScreen}
           component={HomeScreen}
           options={{
-            title: 'List Albums',
+            title: 'Top Albums',
             headerBackTitle: 'Back',
           }}
         />
@@ -35,11 +35,13 @@ export const MainStack = () => {
           }}
         />
         <Stack.Screen
-          name={ScreenEnum.AlbumDetailsScreen}
-          component={AlbumDetailsScreen}
-          options={{
-            title: 'Album Details',
-            headerBackTitle: 'Back',
+          name={ScreenEnum.ArtistDetailsScreen}
+          component={ArtistDetailsScreen}
+          options={({route}) => {
+            return {
+              title: route.params.artist,
+              headerBackTitle: 'Back',
+            };
           }}
         />
       </Stack.Navigator>

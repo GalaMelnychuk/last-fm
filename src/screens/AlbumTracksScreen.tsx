@@ -63,7 +63,7 @@ export const AlbumTracksScreen: React.FC<Props> = ({route}) => {
   };
 
   const navToArtist = () => {
-    navigation.navigate(ScreenEnum.AlbumDetailsScreen, {
+    navigation.navigate(ScreenEnum.ArtistDetailsScreen, {
       artist: albumInfo.artist,
     });
   };
@@ -77,7 +77,7 @@ export const AlbumTracksScreen: React.FC<Props> = ({route}) => {
         errorText={errorText}
       />
       <TrackList data={albumInfo.tracks?.track} album={albumInfo} />
-      <Button title="Read more about the album" onPress={navToArtist} />
+      <Button title="Read more about the artist" onPress={navToArtist} />
     </SafeAreaView>
   );
 };
