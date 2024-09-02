@@ -44,17 +44,6 @@ export const SearchModal: React.FC<Props> = ({
   const [noItems, setNoItems] = useState(false);
 
   useEffect(() => {
-    return () => {
-      setSearchValue('');
-      setInputName('');
-      setPage(1);
-      dispatch(setArtistList([]));
-      dispatch(setTotalArtistList('0'));
-      setNoItems(false);
-    };
-  }, []);
-
-  useEffect(() => {
     setPage(1);
 
     if (!inputName) {
